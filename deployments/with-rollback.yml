@@ -4,18 +4,22 @@ kind: AnalysisTemplate
 metadata:
   name: integrationtests
 spec:
+  args:
+    - name: succeed
   metrics:
     - name: integrationtests
+      failureLimit: 1
       provider:
         job:
           spec:
+            backoffLimit: 0
             template:
-              backoffLimit: 1
               spec:
                 containers:
                   - name: integrationtests
-                    image: pingserver:0.0.0
+                    image: pingserver:rollback
                     command: ["integrationtests"]
+                    args: ["-succeed", "{{args.succeed}}"]
                 restartPolicy: Never
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -31,10 +35,16 @@ spec:
         - analysis:
             templates:
               - templateName: integrationtests
+            args:
+              - name: succeed
+                value: "false"
         - setWeight: 60
         - analysis:
             templates:
               - templateName: integrationtests
+            args:
+              - name: succeed
+                value: "false"
   selector:
     matchLabels:
       app: pingserver
@@ -45,7 +55,7 @@ spec:
     spec:
       containers:
         - name: pingserver
-          image: pingserver:0.0.0
+          image: pingserver:rollback
           ports:
             - name: http
               containerPort: 8080

@@ -36,12 +36,17 @@ clean: ## Delete local dev environment
 
 .PHONY: up
 up: bootstrap ## Run a local dev environment
-	@-docker build -t pingserver:0.0.0 -t pingserver:0.1.0 -f build/Dockerfile .
+	@-docker build -t pingserver:0.0.0 -t pingserver:0.1.0 -t pingserver:rollback -f build/Dockerfile .
 	@-kind load docker-image pingserver:0.0.0 --name $(PROJECT_NAME)
 	@-kind load docker-image pingserver:0.1.0 --name $(PROJECT_NAME)
+	@-kind load docker-image pingserver:rollback --name $(PROJECT_NAME)
 	echo "Deploying initial set of 5 pods"
 	@-kubectl apply -f deployments/pingserver.yml
 
 .PHONY: deploy
 deploy: up ## Perform a deployment with a new version
 	@-kubectl argo rollouts set image pingserver pingserver=pingserver:0.1.0
+
+.PHONY: rollback
+rollback: up ## Perform a deployment with rollback due to rollback
+	@-kubectl apply -f deployments/with-rollback.yml
