@@ -1,0 +1,68 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: integrationtests
+spec:
+  metrics:
+    - name: integrationtests
+      provider:
+        job:
+          spec:
+            template:
+              backoffLimit: 1
+              spec:
+                containers:
+                  - name: integrationtests
+                    image: pingserver:0.0.0
+                    command: ["integrationtests"]
+                restartPolicy: Never
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: pingserver
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      analysis:
+        templates:
+          - templateName: integrationtests
+      steps:
+        - setWeight: 20
+        - pause: { duration: 10 }
+        - setWeight: 40
+        - pause: { duration: 10 }
+        - setWeight: 60
+        - pause: { duration: 10 }
+        - setWeight: 80
+        - pause: { duration: 10 }
+  selector:
+    matchLabels:
+      app: pingserver
+  template:
+    metadata:
+      labels:
+        app: pingserver
+    spec:
+      containers:
+        - name: pingserver
+          image: pingserver:0.0.0
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pingserver
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: pingserver

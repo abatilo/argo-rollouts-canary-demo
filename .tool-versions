@@ -1,0 +1,6 @@
+argo-rollouts 0.9.1
+golang 1.15
+helm 3.2.1
+helmfile 0.130.1
+kind 0.8.1
+kubectl 1.18.2

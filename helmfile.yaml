@@ -1,0 +1,15 @@
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: themagicalkarp
+    url: https://themagicalkarp.github.io/charts
+
+releases:
+  - name: argo-rollouts
+    chart: argo/argo-rollouts
+  - name: kube-janitor # Clean up integration test pods
+    chart: themagicalkarp/kube-janitor
+    values:
+      - kubejanitor:
+          namespace: default
+          expiration: 2
