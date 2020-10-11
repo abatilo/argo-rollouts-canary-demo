@@ -23,18 +23,17 @@ kind: Rollout
 metadata:
   name: pingserver
 spec:
-  replicas: 5
+  replicas: 10
   strategy:
     canary:
+      analysis:
+        templates:
+          - templateName: integrationtests
       steps:
-        - setWeight: 30
-        - analysis:
-            templates:
-              - templateName: integrationtests
-        - setWeight: 60
-        - analysis:
-            templates:
-              - templateName: integrationtests
+        - setWeight: 10
+        - setWeight: 20
+        - setWeight: 40
+        - setWeight: 80
   selector:
     matchLabels:
       app: pingserver

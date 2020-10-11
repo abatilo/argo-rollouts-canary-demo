@@ -40,7 +40,7 @@ up: bootstrap ## Run a local dev environment
 	@-kind load docker-image pingserver:0.0.0 --name $(PROJECT_NAME)
 	@-kind load docker-image pingserver:0.1.0 --name $(PROJECT_NAME)
 	@-kind load docker-image pingserver:rollback --name $(PROJECT_NAME)
-	echo "Deploying initial set of 5 pods"
+	echo "Deploying initial set of pods"
 	@-kubectl apply -f deployments/pingserver.yml
 
 .PHONY: deploy

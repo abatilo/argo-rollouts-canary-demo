@@ -38,11 +38,6 @@ integration tests between every batch of pods being rolled out.
 
 ## Testing automatic rollback
 
-**There is currently a bug in argo-rollouts that is being tracked
-[here](https://github.com/argoproj/argo-rollouts/issues/521). This bug makes
-it such that if a `Job` analysis metric provider fails, the rollout continues.
-Hopefully this bug is fixed soon.**
-
 Type `make rollback` to demonstrate a deployment where we have automatic
 rollback. The integration tests will fail and then the canary deployment will
 be stopped.
