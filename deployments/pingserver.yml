@@ -24,11 +24,9 @@ metadata:
   name: pingserver
 spec:
   revisionHistoryLimit: 1
-  replicas: 10
+  replicas: 30
   strategy:
     canary:
-      maxUnavailable: 0
-      maxSurge: 1
       analysis:
         templates:
           - templateName: integrationtests

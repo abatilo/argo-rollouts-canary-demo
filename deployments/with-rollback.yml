@@ -28,11 +28,9 @@ metadata:
   name: pingserver
 spec:
   revisionHistoryLimit: 1
-  replicas: 10
+  replicas: 30
   strategy:
     canary:
-      maxUnavailable: 0
-      maxSurge: 1
       analysis:
         templates:
           - templateName: integrationtests
@@ -40,10 +38,9 @@ spec:
           - name: succeed
             value: "true"
       steps:
-        - setWeight: 10
-        - setWeight: 20
-        - setWeight: 40
         - setWeight: 80
+        - pause:
+            duration: 60
         - analysis:
             templates:
               - templateName: integrationtests

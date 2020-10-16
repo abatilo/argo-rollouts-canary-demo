@@ -2,9 +2,9 @@ version: v0.130.1
 dependencies:
 - name: argo-rollouts
   repository: https://argoproj.github.io/argo-helm
-  version: 0.3.7
+  version: 0.3.6
 - name: kube-janitor
   repository: https://themagicalkarp.github.io/charts
   version: 0.1.0
-digest: sha256:0fc6c2c1c729fa364a98b71da20020f5d8fbe31413795dd3f8383173d4dc8a34
-generated: "2020-10-09T08:58:49.214445104-06:00"
+digest: sha256:3e2860c53d243d35eb978a2eebfc969d9ca9004c6d8349a42b50f153c940dfd6
+generated: "2020-10-16T06:47:22.321773507-06:00"

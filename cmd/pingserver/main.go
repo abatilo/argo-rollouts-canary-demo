@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 func main() {
@@ -28,7 +27,6 @@ func main() {
 	go func() {
 		<-c
 		log.Println("Shutting down")
-		time.Sleep(30 * time.Second)
 		s.Shutdown(context.Background())
 		close(done)
 	}()
